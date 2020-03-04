@@ -332,6 +332,7 @@ class WebSocketShard extends EventEmitter {
    * @private
    */
   onClose(event) {
+    console.log(event);
     if (this.sequence !== -1) this.closeSequence = this.sequence;
     this.sequence = -1;
 
@@ -531,6 +532,7 @@ class WebSocketShard extends EventEmitter {
     tag = 'HeartbeatTimer',
     ignoreHeartbeatAck = [Status.WAITING_FOR_GUILDS, Status.IDENTIFYING, Status.RESUMING].includes(this.status),
   ) {
+    console.log(`Trying to send a heartbeat now`);
     if (ignoreHeartbeatAck && !this.lastHeartbeatAcked) {
       this.debug(`[${tag}] Didn't process heartbeat ack yet but we are still connected. Sending one now.`);
     } else if (!this.lastHeartbeatAcked) {
