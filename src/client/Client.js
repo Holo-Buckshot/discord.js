@@ -231,6 +231,7 @@ class Client extends BaseClient {
    */
   destroy() {
     super.destroy();
+    console.log('client.destroy')
     this.ws.destroy();
     this.token = null;
   }

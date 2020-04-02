@@ -695,7 +695,7 @@ class WebSocketShard extends EventEmitter {
     if (this.connection) {
       // If the connection is currently opened, we will (hopefully) receive close
       if (this.connection.readyState === WebSocket.OPEN) {
-        this.connection.close(closeCode);
+        this.connection.close(closeCode, 'Destroyed');
       } else {
         // Connection is not OPEN
         this.debug(`WS State: ${CONNECTION_STATE[this.connection.readyState]}`);
@@ -703,7 +703,7 @@ class WebSocketShard extends EventEmitter {
         this._cleanupConnection();
         // Attempt to close the connection just in case
         try {
-          this.connection.close(closeCode);
+          this.connection.close(closeCode, 'Destroyed');
         } catch {
           // No-op
         }

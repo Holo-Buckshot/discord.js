@@ -230,6 +230,7 @@ class WebSocketManager extends EventEmitter {
           this.debug(`Session ID is present, attempting an immediate reconnect...`, shard);
           this.reconnect(true);
         } else {
+          console.log('shard.sessionID');
           shard.destroy({ reset: true, emit: false, log: false });
           this.reconnect();
         }
@@ -335,6 +336,7 @@ class WebSocketManager extends EventEmitter {
     this.debug(`Manager was destroyed. Called by:\n${new Error('MANAGER_DESTROYED').stack}`);
     this.destroyed = true;
     this.shardQueue.clear();
+    console.log('manager.destroy');
     for (const shard of this.shards.values()) shard.destroy({ closeCode: 1000, reset: true, emit: false, log: false });
   }
 
