@@ -247,6 +247,7 @@ class WebSocketManager extends EventEmitter {
         this.shardQueue.add(shard);
         this.reconnect();
       });
+      shard.on('error', error => console.log(error));
 
       shard.eventsAttached = true;
     }
