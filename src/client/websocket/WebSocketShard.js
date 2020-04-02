@@ -149,6 +149,8 @@ class WebSocketShard extends EventEmitter {
      * @private
      */
     Object.defineProperty(this, 'connectedAt', { value: 0, writable: true });
+
+    this.zombieCount = 0;
   }
 
   /**
@@ -536,7 +538,7 @@ class WebSocketShard extends EventEmitter {
     if (ignoreHeartbeatAck && !this.lastHeartbeatAcked) {
       this.debug(`[${tag}] Didn't process heartbeat ack yet but we are still connected. Sending one now.`);
     } else if (!this.lastHeartbeatAcked) {
-      return console.log('ignoring zombie connection');
+      if (this.zombieCount++ != 3) return;
       this.debug(
         `[${tag}] Didn't receive a heartbeat ack last time, assuming zombie connection. Destroying and reconnecting.
     Status          : ${STATUS_KEYS[this.status]}
@@ -547,7 +549,7 @@ class WebSocketShard extends EventEmitter {
       this.destroy({ closeCode: 4009, reset: true });
       return;
     }
-
+    this.zombieCount = 0;
     this.debug(`[${tag}] Sending a heartbeat.`);
     this.lastHeartbeatAcked = false;
     this.lastPingTimestamp = Date.now();
