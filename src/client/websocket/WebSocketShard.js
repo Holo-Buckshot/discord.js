@@ -536,6 +536,7 @@ class WebSocketShard extends EventEmitter {
     if (ignoreHeartbeatAck && !this.lastHeartbeatAcked) {
       this.debug(`[${tag}] Didn't process heartbeat ack yet but we are still connected. Sending one now.`);
     } else if (!this.lastHeartbeatAcked) {
+      return console.log('ignoring zombie connection');
       this.debug(
         `[${tag}] Didn't receive a heartbeat ack last time, assuming zombie connection. Destroying and reconnecting.
     Status          : ${STATUS_KEYS[this.status]}
@@ -680,6 +681,7 @@ class WebSocketShard extends EventEmitter {
    * @private
    */
   destroy({ closeCode = 1000, reset = false, emit = true, log = true } = {}) {
+    if (closeCode == 4009) throw new Error('FUCK YOU');
     if (log) {
       this.debug(`[DESTROY]
     Close Code    : ${closeCode}
