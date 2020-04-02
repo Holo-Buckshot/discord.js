@@ -695,6 +695,7 @@ class WebSocketShard extends EventEmitter {
 
     // Step 1: Close the WebSocket connection, if any, otherwise, emit DESTROYED
     if (this.connection) {
+      console.log('cleanup from destroy');
       // If the connection is currently opened, we will (hopefully) receive close
       if (this.connection.readyState === WebSocket.OPEN) {
         this.connection.close(closeCode, 'Destroyed');
@@ -717,6 +718,7 @@ class WebSocketShard extends EventEmitter {
       this._emitDestroyed();
     }
 
+    console.log('nulling connection');
     // Step 2: Null the connection object
     this.connection = null;
 
